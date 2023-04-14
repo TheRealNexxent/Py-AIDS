@@ -23,7 +23,7 @@ class Array():
             
             raise IndexError("Index out of range")
         elif str(type(obj)) != f"<class '{self._type}'>":
-            raise TypeError("Type mismatch")
+            raise TypeError(f"Type Error: {self._type} expected, got {type(obj)}")
         else:
             self._array[index] = obj
     
