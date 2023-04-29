@@ -9,10 +9,11 @@ class GBuffer:
         for i in self.buffer:
             if i != None:
                 self.bufferStr += i
+                
+        return self.bufferStr
         
     def __str__(self):
-        self.toString()
-        return self.bufferStr
+        return str(self.buffer)
     
     def __len__(self):
         return self.size
@@ -75,7 +76,14 @@ class GBuffer:
         self.buffer = self.buffer[:index] + [None]*size + self.buffer[index:]
         
         
-    
-        
+    def move_gap(self, distance: int):
+        if isinstance(distance, int):
+            if distance > 0 and distance < len(self.buffer[self.getGapIndex() + self.getGapSize() + 1:]):
+                self.reposeGap(self.getGapIndex() + distance)
+            elif distance < 0 and distance < len(self.buffer[:self.getGapIndex()]):
+                distance = abs(distance)
+                self.reposeGap(self.getGapIndex() - distance)
+            else:
+                raise ValueError("Distance out of range")
         
         
