@@ -3,10 +3,16 @@ class GBuffer:
     def __init__(self, size: int):
         self.size = size
         self.buffer = [None] * size
+        self.bufferStr = ""
         
+    def toString(self):
+        for i in self.buffer:
+            if i != None:
+                self.bufferStr += i
         
     def __str__(self):
-        return str(self.buffer)
+        self.toString()
+        return self.bufferStr
     
     def __len__(self):
         return self.size
@@ -14,43 +20,60 @@ class GBuffer:
     def __getitem__(self, index):
         return self.buffer[index]
     
-    def __setitem__(self, index, value):
-        if isinstance(value, str):
-            if index > 0:
-                if self.buffer[index: index + len(value)] == [None]*len(value) and self._getGapSize() >= len(value):
-                    self._setValue(index, value)
-                    return
-                else:
-                    self._growGap(index)
-                    self.__setitem__(index, value)
-            else:
-                raise IndexError("Index out of range")
-        else:
-            raise ValueError("Value must be a string")
     
-    
-    
-    def _getGapSize(self):
-        return self.buffer.count(None)
-    
-    
-    def _growGap(self, index):
-        self.buffer = self.buffer[:index] + [None]*self.size + self.buffer[index:]
-        
-    def shrinkGap(self, shrinkSize):
-        if self._getGapSize() < shrinkSize:
-            raise ValueError("Shrink size is too large")
-        else:
-            for i in range(shrinkSize):
-                self.buffer.remove(None)
-        
-        
-    def _setValue(self, index, value):
-        if index >= len(self.buffer) or index < 0:
+    def insert(self, value, index: int = None):
+        if index == None:
+            index = self.getGapIndex()
+            
+        if(index >= self.size or index < 0 ):
             raise IndexError("Index out of range")
-        for i in range(len(value)):
-            self.buffer[index + i] = value[i]
+        
+        elif(self.getGapSize() == 0):
+            self.growGap(index)
+            self.insert(value, index)
+        
+        elif(self.buffer[index] != None):
+            self.reduceGap(self.getGapSize())
+            self.growGap(index)
+            self.insert(value, index)
+            
+        elif(len(value) > self.getGapSize()):
+            self.growGap(index)
+            self.insert(value, index)
+            
+        elif(self.buffer[:index].count(None) > 0 and self.buffer[index:].count(None) > 0 and index != 0):
+            index = self.getGapIndex()
+            self.insert(value, index)
+        else:
+            for i in range(len(value)):
+                self.buffer[index] = value[i]
+                index += 1
     
+    
+    def reduceGap(self, size):
+        self.buffer = self.buffer[:self.getGapIndex()] + self.buffer[self.getGapIndex()+size:]
+    
+    def reposeGap(self, index):
+        if(index >= self.size or index < 0 ):
+            raise IndexError("Index out of range")
+        else:
+            gapSize = self.getGapSize()
+            self.reduceGap(gapSize)
+            self.growGap(index, gapSize)
+            
+    
+    def getGapSize(self):
+        return self.buffer.count(None)
+        
+    def getGapIndex(self):
+        return self.buffer.index(None)
+    
+    
+    def growGap(self, index, size: int = None):
+        if(size == None):
+            size = self.size
+        self.buffer = self.buffer[:index] + [None]*size + self.buffer[index:]
+        
         
     
         
