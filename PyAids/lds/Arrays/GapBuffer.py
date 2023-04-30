@@ -86,4 +86,13 @@ class GBuffer:
             else:
                 raise ValueError("Distance out of range")
         
+    def get_text(self):
+        res = ""
+        for i in range(len(self.buffer)):
+            if self.buffer[i] == None:
+                res += " "
+            else:
+                res += self.buffer[i]
         
+        return res
+    
