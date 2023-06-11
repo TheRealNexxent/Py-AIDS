@@ -46,3 +46,26 @@ class HAT:
             self.hash[i] = [None] * newsize
                 
         self.n = newsize
+        
+        
+    def lookup(self, key):
+        if key in self.keys():
+            return self.hash[key]
+        else:
+            raise KeyError("Key not found")
+        
+    def delete(self, key):
+        if key in self.keys():
+            del self.hash[key]
+        else:
+            raise KeyError("Key not found")
+        
+        
+    def range_lookup(self, key1, key2):
+        if key1 in self.keys() and key2 in self.keys():
+            if self.hash.keys().index(key1) < self.hash.keys().index(key2):
+                return self.hash[key1 : key2]
+            else:
+                return self.hash[key2 : key1]
+        else:
+            raise KeyError("Key not found")
