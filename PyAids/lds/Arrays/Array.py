@@ -1,7 +1,7 @@
 # magic methods: __setitem__, __getitem__, __repr__, __len__, __iter__
 # all magic methods not to be included in documentation
 
-class Array():
+class Array:
     """
     Creates an array of a given size and type.
     """
@@ -15,7 +15,7 @@ class Array():
             type of elements in array
         """
         self._size = size
-        self._array = [None] * 5
+        self._array = [None] * size
         self._type = aType
     
     def __setitem__(self, index: int, obj):
@@ -142,6 +142,8 @@ class Array():
         if(len(self._array) == self._size):
             self._size += 1
         self._array.insert(0, item)
+        
+        
         
         
     
