@@ -58,7 +58,16 @@ class LinkedList:
             self.head = Node(value, self.head)
     
     
-    
+    def insert(self, value, index):
+        if index == 0:
+            self.insert_begin(value)
+        elif index == len(self):
+            self.insert_end(value)
+        else:
+            current = self.head
+            for i in range(index-1):
+                current = current.next_node
+            current.next_node = Node(value, current.next_node)
     
     
     
