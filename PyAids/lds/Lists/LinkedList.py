@@ -160,7 +160,7 @@ class LinkedList:
     
             
     def delete_begin(self):
-        if self.__len__ == 0:
+        if self.__len__() == 0:
             raise ValueError("The linked list is empty.")
         else:
             current = self.head
@@ -168,7 +168,7 @@ class LinkedList:
             del current
     
     def delete_end(self):
-        if self.__len__ == 0:
+        if self.__len__() == 0:
             raise ValueError("The linked list is empty.")
         else:
             current = self.head
@@ -177,7 +177,7 @@ class LinkedList:
             current.next_node = None
             
     def delete_index(self, index):
-        if self.__len__ == 0:
+        if self.__len__() == 0:
             raise IndexError("The linked list is empty.")
         else:
             if index == 0:
@@ -191,7 +191,7 @@ class LinkedList:
                 current.next_node = current.next_node.next_node
     
     def delete_value(self, value):
-        if self.__len__ == 0:
+        if self.__len__() == 0:
             raise ValueError("The linked list is empty.")
         else:
             if self.search(value):
@@ -201,7 +201,7 @@ class LinkedList:
                 raise ValueError("The value is not present in the linked list.")
             
     def update(self, index, value):
-        if self.__len__ == 0:
+        if self.__len__() == 0:
             raise IndexError("The linked list is empty.")
         else:
             if index == 0:
@@ -214,7 +214,7 @@ class LinkedList:
         
     
     def reverse(self):
-        if self.__len__ == 0:
+        if self.__len__() == 0:
             raise ValueError("The linked list is empty.")
         else:
             current = self.head
@@ -238,17 +238,90 @@ class LinkedList:
                 
             current.next_node = other.head
     
+    def swap(self, index1, index2):
+        if self.__len__() == 0:
+            raise IndexError("The linked list is empty.")
+        elif self.__len__() == 1:
+            raise IndexError("The list has only one element.")
+        else:
+            if index1 == 0:
+                current1 = self.head
+            else:
+                current1 = self.head
+                for i in range(index1):
+                    current1 = current1.next_node
+            
+            if index2 == 0:
+                current2 = self.head
+            else:
+                current2 = self.head
+                for i in range(index2):
+                    current2 = current2.next_node
+            
+            temp = current1.value
+            current1.value = current2.value
+            current2.value = temp
     
             
-                
+    def sorted(self, ascending: bool = True):
+        if self.__len__() == 0:
+            raise ValueError("The linked list is empty.")
+        else:
+            if ascending == True:
+                current = self.head
+                while current.next_node != None:
+                    if current.value > current.next_node.value:
+                        return False
+                    current = current.next_node
+                return True
+            else:
+                current = self.head
+                while current.next_node != None:
+                    if current.value < current.next_node.value:
+                        return False
+                    current = current.next_node
+                return True
     
+    def sort(self, ascending=True):
+        if self.__len__() == 0:
+            return None
+        else:
+            if self.sorted(ascending=ascending):
+                return
+            else:
+                # create a list of the linked list and sort them and convert back to linked list
+                values = self.to_list()
+                values.sort(reverse= not ascending)
+                self.create_from_list(values)
+        
     
     
     ###### Custom Methods for creation of linked lists ######
     
+    
+    # return a list of the values of the linked lists
+    def to_list(self):
+        if self.__len__() == 0:
+            return []
+        else:
+            current = self.head
+            values = []
+            while current != None:
+                values.append(current.value)
+                current = current.next_node
+            return values
+    
+    
     # create a linked list from a list
-    def create_from_list(self):
-        pass
+    def create_from_list(self, array: list):
+        if len(array) == 0:
+            self.head = None
+        else:
+            self.head = Node(array[0])
+            current = self.head
+            for i in range(1, len(array)):
+                current.next_node = Node(array[i])
+                current = current.next_node
     
     
     # create a linked list from a dictionary with the keys as the values of the nodes and the values as the next nodes
