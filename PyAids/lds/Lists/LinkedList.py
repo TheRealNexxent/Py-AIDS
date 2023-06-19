@@ -323,8 +323,43 @@ class LinkedList:
                 current.next_node = Node(array[i])
                 current = current.next_node
     
+    def _getDuplicates(self, list):
+        duplicates = []
+        for i in list:
+            if list.count(i) > 1:
+                duplicates.append(i)
+        return duplicates
+    
     
     # create a linked list from a dictionary with the keys as the values of the nodes and the values as the next nodes
-    def create_from_dict(self):
-        pass            
+    def create_from_dict(self, dictionary: dict):
+        if len(dictionary) == 0:
+            self.head = None
+        else:
+            keys = list(dictionary.keys())
+            if len(keys) > len(set(keys)):
+                raise ValueError(f"The keys of the dictionary must be unique. There are duplicates in the keys: {self._getDuplicates(keys)}")
+            
+            elif len(keys) == len(set(keys)):
+                if None in dictionary.values():
+                    raise ValueError("The values of the dictionary must not be None.")
+                elif len(dictionary.values()) == 1:
+                    self.head = Node(list(dictionary.keys())[0])
+                else:
+                    self.head = Node(list(dictionary.keys())[0])
+                    self.head.next_node = Node(dictionary[self.head.value])
+                    current = self.head.next_node
+                    values = list(dictionary.values())
+                    keys_new = [x for x in keys if x in values]
+                    for i in keys:
+                        if i not in keys_new:
+                            del dictionary[i]
+                    print(dictionary)
+                    values = list(dictionary.values())
+                    for i in range(1, len(keys_new)):
+                        current.next_node = Node(dictionary[current.value])
+                        current = current.next_node
                     
+                    current.next_node = Node(dictionary[current.value])
+                    
+            

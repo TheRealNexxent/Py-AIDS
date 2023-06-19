@@ -1,5 +1,6 @@
 class Node:
-        def __init__(self, value, next_node=None):
+        def __init__(self, value, next_node=None, prev_node=None):
+            self.prev_node = prev_node
             self.value = value
             self.next_node = next_node
             
@@ -15,6 +16,9 @@ class Node:
         
         def set_next(self, node):
             self.next_node = node
+            
+        def set_prev(self, node):
+            self.prev_node = node
             
         def get_value(self):
             return self.value
