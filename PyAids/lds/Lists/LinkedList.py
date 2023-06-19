@@ -158,8 +158,23 @@ class LinkedList:
                         return index
                     current = current.next_node
     
+    def __getitem__(self, index):
+        if self.head == None:
+            raise IndexError("The linked list is empty.")
+        else:
+            if index == 0:
+                return self.head
+            else:
+                current = self.head
+                for i in range(index):
+                    current = current.next_node
+                return current
+        
             
     def delete_begin(self):
+        """
+        Deletes the first node of the linked list.
+        """
         if self.__len__() == 0:
             raise ValueError("The linked list is empty.")
         else:
@@ -168,6 +183,9 @@ class LinkedList:
             del current
     
     def delete_end(self):
+        """
+        Deletes the last node of the linked list.
+        """
         if self.__len__() == 0:
             raise ValueError("The linked list is empty.")
         else:
@@ -176,7 +194,15 @@ class LinkedList:
                 current = current.next_node
             current.next_node = None
             
-    def delete_index(self, index):
+    def delete_index(self, index: int):
+        """
+        Deletes a node at any given index in the linked list.
+        ----------
+        Parameters
+        ----------
+        index : int
+            The index at which the node is to be deleted.
+        """
         if self.__len__() == 0:
             raise IndexError("The linked list is empty.")
         else:
@@ -191,6 +217,14 @@ class LinkedList:
                 current.next_node = current.next_node.next_node
     
     def delete_value(self, value):
+        """
+        Deletes the first occurence of the given value in the linked list.
+        ----------
+        Parameters
+        ----------
+        value : any
+            The value to be deleted.
+        """
         if self.__len__() == 0:
             raise ValueError("The linked list is empty.")
         else:
@@ -200,20 +234,45 @@ class LinkedList:
             else:
                 raise ValueError("The value is not present in the linked list.")
             
-    def update(self, index, value):
+    def update(self, index, value: any, next_n: Node = None):
+        """
+        Modifies the Node at the given index.
+        ----------
+        Parameters
+        ----------
+        index : int
+            The index of the node to be modified.
+        value : any
+            The new value of the node.
+        next_n : Node, optional
+            The new next node of the node, default in None.
+        """
         if self.__len__() == 0:
             raise IndexError("The linked list is empty.")
         else:
-            if index == 0:
+            if index == 0 and next_n is None:
                 self.head.value = value
-            else:
+                
+            elif next_n is None:
                 current = self.head
                 for i in range(index):
                     current = current.next_node
                 current.value = value
+                
+            elif next_n is not None and type(next_n) == Node:
+                current = self.head
+                for i in range(index):
+                    current = current.next_node
+                current.value = value
+                current.next_node = next_n
+            elif type(next_n) != Node:
+                raise TypeError("The parameter next_n must be of type Node.")
         
     
     def reverse(self):
+        """
+        Reverses the linked list.
+        """
         if self.__len__() == 0:
             raise ValueError("The linked list is empty.")
         else:
@@ -227,6 +286,9 @@ class LinkedList:
             self.head = prev
     
     def concatenate(self, other):
+        """
+        Concatenates the given linked list to the end of the current linked list.
+        """
         if self.__len__() == 0:
             self.head = other.head
         elif other.__len__() == 0:
@@ -239,6 +301,16 @@ class LinkedList:
             current.next_node = other.head
     
     def swap(self, index1, index2):
+        """
+        Swaps two nodes in the linked list.
+        ----------
+        Parameters
+        ----------
+        index1 : int
+            The index of the first node to be swapped.
+        index2 : int
+            The index of the second node to be swapped.
+        """
         if self.__len__() == 0:
             raise IndexError("The linked list is empty.")
         elif self.__len__() == 1:
@@ -264,6 +336,11 @@ class LinkedList:
     
             
     def sorted(self, ascending: bool = True):
+        """
+        Checks if the linked list is sorted or not.
+        ascending : bool, optional
+            Check if the sort is ascending or descending, default is True(ascending).
+        """
         if self.__len__() == 0:
             raise ValueError("The linked list is empty.")
         else:
@@ -283,24 +360,39 @@ class LinkedList:
                 return True
     
     def sort(self, ascending=True):
+        """
+        Sorts the linked list.
+        ascending : bool, optional
+            True: sort in ascending order
+            False: sort in descending order
+            default: True
+        """
         if self.__len__() == 0:
             return None
         else:
             if self.sorted(ascending=ascending):
                 return
             else:
-                # create a list of the linked list and sort them and convert back to linked list
                 values = self.to_list()
                 values.sort(reverse= not ascending)
                 self.create_from_list(values)
         
     
     
-    ###### Custom Methods for creation of linked lists ######
+    """
+    Custom methods for creating and converting linked lists.
+    """
     
     
-    # return a list of the values of the linked lists
     def to_list(self):
+        """
+        creates a list of the values of the linked list.
+        -------
+        Returns
+        -------
+        list
+            A list of the values of the linked list.
+        """
         if self.__len__() == 0:
             return []
         else:
@@ -312,8 +404,17 @@ class LinkedList:
             return values
     
     
-    # create a linked list from a list
+
     def create_from_list(self, array: list):
+        """
+        Create a linked list from a list
+        ----------
+        Parameters
+        ----------
+        array : list
+            The list to be converted to a linked list.
+            
+        """
         if len(array) == 0:
             self.head = None
         else:
@@ -323,7 +424,10 @@ class LinkedList:
                 current.next_node = Node(array[i])
                 current = current.next_node
     
-    def _getDuplicates(self, list):
+    def __getDuplicates(self, list):
+        """
+        Finds the duplicates in a list.
+        """
         duplicates = []
         for i in list:
             if list.count(i) > 1:
@@ -331,14 +435,22 @@ class LinkedList:
         return duplicates
     
     
-    # create a linked list from a dictionary with the keys as the values of the nodes and the values as the next nodes
     def create_from_dict(self, dictionary: dict):
+        """
+        Creates a linked list from a dictionary with the keys as the values of the nodes and the values as the next nodes.
+        The first key is the value of the head node.
+        ----------
+        Parameters
+        ----------
+        dictionary : dict
+            The dictionary to be converted to a linked list.
+        """
         if len(dictionary) == 0:
             self.head = None
         else:
             keys = list(dictionary.keys())
             if len(keys) > len(set(keys)):
-                raise ValueError(f"The keys of the dictionary must be unique. There are duplicates in the keys: {self._getDuplicates(keys)}")
+                raise ValueError(f"The keys of the dictionary must be unique. There are duplicates in the keys: {self.__getDuplicates(keys)}")
             
             elif len(keys) == len(set(keys)):
                 if None in dictionary.values():
