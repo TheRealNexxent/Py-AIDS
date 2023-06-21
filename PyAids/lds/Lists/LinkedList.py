@@ -203,7 +203,7 @@ class LinkedList:
         index : int
             The index at which the node is to be deleted.
         """
-        if self.__len__() == 0:
+        if self.__len__() == 0 or index > self.__len__() or index < 0:
             raise IndexError("The linked list is empty.")
         else:
             if index == 0:
