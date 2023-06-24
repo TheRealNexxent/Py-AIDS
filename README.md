@@ -37,4 +37,6 @@ And many more.
 
 With this, we come to an end of the initial onboarding guide of this Venture. Proceed into further guides with the name *README.md* within folders like lds, to know more information about module specific commands.
 
+ ***Thanks for supporting Py-Aids!*** 🎊
+
 # END OF GUIDE.
